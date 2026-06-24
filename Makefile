@@ -40,15 +40,15 @@ migrate-down: ## Roll back the latest Alembic migration
 # ── Testing ───────────────────────────────────────────────────────────────────
 
 test-backend: ## Run Python pytest suite
-	docker compose exec backend pytest --cov=app --cov-report=term-missing
+	docker compose exec backend pytest --cov=app --cov-report=term-missing -v
 
 test-frontend: ## Run Laravel PHPUnit suite
-	docker compose exec frontend ./vendor/bin/phpunit
+	docker compose exec frontend php artisan test
 
-test-e2e: ## Run Playwright end-to-end tests
+test-e2e: ## Run Playwright end-to-end tests (requires e2e/ setup)
 	cd e2e && npx playwright test
 
-test: test-backend test-frontend ## Run backend and frontend test suites
+test: test-backend test-frontend ## Run all test suites (backend + frontend)
 
 # ── Linting ───────────────────────────────────────────────────────────────────
 
