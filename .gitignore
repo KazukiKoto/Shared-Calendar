@@ -1,0 +1,12 @@
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editor artifacts
+*.swp
+*~
+.idea/
+.vscode/
+
+#ignore plan
+/plan
