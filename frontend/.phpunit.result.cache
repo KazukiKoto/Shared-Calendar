@@ -1,1 +1,1 @@
-{"version":2,"defects":[],"times":{"Tests\\Feature\\HealthTest::test_health_endpoint_returns_ok":0.088,"Tests\\Feature\\HealthTest::test_up_endpoint_returns_200":0.023}}
+{"version":2,"defects":[],"times":{"Tests\\Feature\\HealthTest::test_health_endpoint_returns_ok":0.101,"Tests\\Feature\\HealthTest::test_up_endpoint_returns_200":0.051}}
