@@ -70,7 +70,7 @@ jobs:
       - name: Copy .env.example to .env
         run: cp .env.example .env
 
-      - name: Build backend image
+      - name: Build backend (development)
         uses: docker/build-push-action@v5
         with:
           context: ./backend
@@ -79,11 +79,29 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build frontend image
+      - name: Build backend (production)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          target: production
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build frontend (development)
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           target: development
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build frontend (production)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          target: production
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max

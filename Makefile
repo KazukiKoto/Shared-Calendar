@@ -19,8 +19,11 @@ up-build: ## Build images and start all services
 down: ## Stop and remove containers
 	docker compose down
 
-build: ## Build all images without starting
+build: ## Build all images (development targets)
 	docker compose build
+
+build-prod: ## Build production images
+	docker compose -f docker-compose.yml -f docker-compose.prod.yml build
 
 reset: ## Teardown volumes and rebuild from scratch
 	docker compose down -v

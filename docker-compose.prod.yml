@@ -1,0 +1,22 @@
+services:
+  postgres:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+
+  backend:
+    build:
+      context: ./backend
+      target: production
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+    restart: unless-stopped
+
+  nginx:
+    restart: unless-stopped

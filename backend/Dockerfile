@@ -2,7 +2,6 @@ FROM python:3.12-slim AS base
 
 WORKDIR /app
 
-# Install system packages needed for native extensions and health checks
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gcc \
@@ -12,19 +11,28 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ── Development ──────────────────────────────────────────────────────────────
 FROM base AS development
 
-# Copy only the dependency manifest first so pip install is cached separately
-# from source code changes (pyproject.toml rarely changes; app/ changes often).
 COPY pyproject.toml .
-
-# Create a minimal package stub so hatchling can resolve the editable install
-# before the real source is present. COPY . . below overwrites this with
-# the real source without busting the cached pip layer.
+# Stub lets hatchling resolve the editable install before real source arrives.
+# COPY . . below overwrites it without busting the pip layer cache.
 RUN mkdir -p app && touch app/__init__.py
-
 RUN pip install --no-cache-dir -e ".[dev]"
-
-# Copy the real application source (overwrites the stub above)
 COPY . .
 
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# ── Production ───────────────────────────────────────────────────────────────
+FROM base AS production
+
+# Copy only what pip needs to install, so the layer is cached independently
+# of future source changes.
+COPY pyproject.toml .
+COPY app/ app/
+RUN pip install --no-cache-dir "."
+
+RUN useradd --system --no-create-home --shell /bin/false appuser
+USER appuser
+
+EXPOSE 8000
+# Four workers; tune WEB_CONCURRENCY at runtime for the target host.
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
