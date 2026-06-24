@@ -16,10 +16,11 @@ dependencies = [
     "sqlalchemy[asyncio]>=2.0",
     "asyncpg>=0.29",
     "alembic>=1.13",
-    "pydantic>=2.7",
+    "pydantic[email]>=2.7",
     "pydantic-settings>=2.3",
     "python-jose[cryptography]>=3.3",
     "passlib[bcrypt]>=1.7",
+    "bcrypt>=3.0,<5.0",
     "redis[hiredis]>=5.0",
     "celery>=5.4",
     "celery-redbeat>=2.2",
@@ -55,7 +56,22 @@ known-first-party = ["app"]
 # ── Pytest ────────────────────────────────────────────────────────────────────
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
+
+# ── Coverage ──────────────────────────────────────────────────────────────────
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/__init__.py"]
+# sys.monitoring gives correct async coverage on Python 3.12+ (coverage 7.4+)
+core = "sysmon"
+
+[tool.coverage.report]
+skip_empty = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+]
 
 # ── Mypy ─────────────────────────────────────────────────────────────────────
 [tool.mypy]

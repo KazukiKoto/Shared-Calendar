@@ -22,8 +22,10 @@ _db_url = (
 )
 config.set_main_option("sqlalchemy.url", _db_url)
 
-# Stage 02+ will set: from app.models import Base; target_metadata = Base.metadata
-target_metadata = None
+from app.models.user import User  # noqa: F401  registers User with Base
+from app.core.database import Base
+
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
