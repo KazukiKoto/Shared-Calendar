@@ -1,0 +1,22 @@
+# Local development overrides — hot-reload volume mounts.
+# This file is loaded automatically by Docker Compose alongside docker-compose.yml.
+# It is gitignored for teams that prefer different local setups;
+# copy it to docker-compose.override.local.yml for custom tweaks.
+
+services:
+
+  backend:
+    volumes:
+      - ./backend:/app
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  frontend:
+    volumes:
+      - ./frontend:/var/www
+      # Preserve the vendor/ directory generated inside the container
+      - frontend_vendor:/var/www/vendor
+      - frontend_cache:/var/www/bootstrap/cache
+
+volumes:
+  frontend_vendor:
+  frontend_cache:

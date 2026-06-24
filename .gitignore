@@ -1,12 +1,63 @@
-# OS noise
+# Environment
+.env
+*.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# PHP / Laravel
+/frontend/vendor/
+/frontend/node_modules/
+/frontend/storage/logs/*.log
+/frontend/storage/framework/cache/data/*
+/frontend/storage/framework/sessions/*
+/frontend/storage/framework/views/*
+/frontend/bootstrap/cache/*.php
+/frontend/.env
+/frontend/composer.lock
+
+# Node / Vite
+node_modules/
+/frontend/public/build/
+/frontend/public/hot
+npm-debug.log*
+yarn-error.log*
+
+# Docker volumes / overrides
+docker-compose.override.local.yml
+
+# Database
+*.sqlite
+*.sqlite3
+
+# Secrets / keys
+*.pem
+*.key
+*.crt
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Editor artifacts
-*.swp
-*~
+# IDE
 .idea/
 .vscode/
-
-#ignore plan
-/plan
+*.swp
+*~
